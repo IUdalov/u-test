@@ -1,32 +1,3 @@
-# u-test
-[![License](http://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
-
-**u-test** is a robust and simple unit testing framework for Lua.
-It provides easy and flexible functions. -- fix me 
-
-### Features
-u-test has all basic unit test framework features such as defining test cases, test suites and set of build-in assertions.
-1. Nice command line interface (like gtest).
-1. Backtrace in failed assertions.
-1. Ordered test execution (as written in source file). 
-1. Support 5.1/5.2/5.3.
-1. Select particular tests with regexp.
-
-
-### How to install
-#### Via GitHub
-Just copy `u-test.lua` to your projct or add this repo as submodule.
-```
-$ git clone git@github.com:iudalov/u-test.git
-```
-#### Via LuaRocks
-[Install](https://luarocks.org) or update lua rocks and run
-```
-$ luarocks install luaunit
-```
-
-### How to 
-```lua
 local test = require 'u-test'
 
 -- This is how you can crete your first test case 
@@ -82,21 +53,3 @@ end
 
 -- this code prints tests summary and invokes os.exit with 0 or 1
 test.summary()
-```
-
-### List of all assertions
-```lua
-test.equal(1, 1)
-test.not_equal(1, 2)
-test.is_false(false)
-test.is_true(true)
-test.is_not_nil("Something")
-test.is_nil(nil)
-test.is_boolean(true)
-test.is_boolean(false)
-test.is_string("I am string! look at me!")
-test.is_number(3)
-test.is_table({"I am table now"})
-test.is_function(function () end)
-test.is_userdata(userdata_value)
-```
