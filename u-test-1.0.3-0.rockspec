@@ -1,8 +1,7 @@
 package = "u-test"
-version = "1.0.0-0"
+version = "1.0.3-0"
 source = {
-    url = "git://github.com/iudalov/u-test",
-    tag = "U-TEST-1.0.0-0"
+    url = "git://github.com/iudalov/u-test"
 }
 
 description = {

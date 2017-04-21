@@ -7,22 +7,23 @@ local function print_help()
 end
 
 local quiet, grey, test_regex
-for i = 1, #arg do
-    if arg[i] == "-h" then
-        print_help()
-        os.exit(0)
-    elseif arg[i] == "-q" then
-        quiet = true
-    elseif arg[i] == "-s" then
-        grey = true
-    elseif not test_regex then
-        test_regex = arg[i]
-    else
-        print_help()
-        os.exit(1)
+if arg then
+    for i = 1, #arg do
+        if arg[i] == "-h" then
+            print_help()
+            os.exit(0)
+        elseif arg[i] == "-q" then
+            quiet = true
+        elseif arg[i] == "-s" then
+            grey = true
+        elseif not test_regex then
+            test_regex = arg[i]
+        else
+            print_help()
+            os.exit(1)
+        end
     end
 end
-
 -- UTILS -----------------------------------------------------------------------
 local function red(str)    return grey and str or "\27[1;31m" .. str .. "\27[0m" end
 local function blue(str)   return grey and str or "\27[1;34m" .. str .. "\27[0m" end
