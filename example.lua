@@ -45,7 +45,7 @@ test.table.concat = function ()
 end
 
 -- you can disabe broken test case like this
-test.dummy_case.skip = true
+test.broken.skip = true
 test.broken.bad_case = function ()
     test.equal(1, 2)
     there_is_no_such_function()
