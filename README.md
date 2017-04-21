@@ -18,7 +18,7 @@ Just copy `u-test.lua` to your projct or add this repo as submodule.
 $ git clone git://github.com/iudalov/u-test
 ```
 #### Via LuaRocks
-[Install](https://luarocks.org) or update lua rocks and run
+[Install](https://luarocks.org/modules/ilia/u-test) or update lua rocks and run
 ```
 $ luarocks install u-test
 ```
