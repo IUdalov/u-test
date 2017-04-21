@@ -1,8 +1,8 @@
 package = "u-test"
-version = "1.0.0"
+version = "1.0.0-0"
 source = {
     url = "git://github.com/iudalov/u-test",
-    tag = "UTEST_1.0.0"
+    tag = "U-TEST-1.0.0-0"
 }
 
 description = {
@@ -24,4 +24,4 @@ build = {
     modules = {}
 }
 
-build.type.modules.["u-test"] = "u-test.lua"
+build.modules["u-test"] = "u-test.lua"
