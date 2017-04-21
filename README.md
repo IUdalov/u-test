@@ -1,28 +1,26 @@
 # u-test
 [![License](http://img.shields.io/badge/License-MIT-green.svg)](LICENSE.txt)
 
-**u-test** is a robust and simple unit testing framework for Lua.
-It provides easy and flexible functions. -- fix me 
+**u-test** is a sane and simple unit testing framework for Lua. It has all essential unit test framework features:
+defining test cases, test suites, set of build-in assertions, configurable tests output, protected calls and etc.
 
-### Features
-u-test has all basic unit test framework features such as defining test cases, test suites and set of build-in assertions.
+### Top features that are not present in other lua test frameworks
 1. Nice command line interface (like gtest).
 1. Backtrace in failed assertions.
 1. Ordered test execution (as written in source file). 
 1. Support 5.1/5.2/5.3.
 1. Select particular tests with regexp.
 
-
 ### How to install
 #### Via GitHub
 Just copy `u-test.lua` to your projct or add this repo as submodule.
 ```
-$ git clone git@github.com:iudalov/u-test.git
+$ git clone git://github.com/iudalov/u-test
 ```
 #### Via LuaRocks
 [Install](https://luarocks.org) or update lua rocks and run
 ```
-$ luarocks install luaunit
+$ luarocks install u-test
 ```
 
 ### How to 
