@@ -12,18 +12,18 @@ defining test cases, test suites, set of build-in assertions, configurable tests
 1. Select particular tests with regexp.
 
 ### How to install
-#### Via GitHub
+#### GitHub
 Just copy `u-test.lua` to your projct or add this repo as submodule.
 ```
 $ git clone git://github.com/iudalov/u-test
 ```
-#### Via LuaRocks
-[Install](https://luarocks.org/modules/ilia/u-test) or update lua rocks and run
+#### [LuaRocks](https://luarocks.org)
+Just run:
 ```
 $ luarocks install u-test
 ```
 
-### How to 
+### How to use
 ```lua
 local test = require 'u-test'
 
@@ -78,9 +78,14 @@ test.broken.bad_case = function ()
     there_is_no_such_function()
 end
 
+-- obtain total number of tests and numer of failed tests
+local ntests, nfailed = test.result()
+
 -- this code prints tests summary and invokes os.exit with 0 or 1
 test.summary()
 ```
+
+![Output](https://raw.githubusercontent.com/iudalov/u-test/master/res/ui.png)
 
 ### List of all assertions
 ```lua

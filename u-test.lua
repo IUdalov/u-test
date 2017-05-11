@@ -178,6 +178,10 @@ api.summary = function ()
     end
 end
 
+api.result = function ( ... )
+    return ntests, nfailed
+end
+
 local default_start_up = function () end
 local default_tear_down = function () collectgarbage() end
 

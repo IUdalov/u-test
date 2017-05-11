@@ -51,5 +51,8 @@ test.broken.bad_case = function ()
     there_is_no_such_function()
 end
 
+-- obtain total number of tests and numer of failed tests
+local ntests, nfailed = test.result()
+
 -- this code prints tests summary and invokes os.exit with 0 or 1
 test.summary()
