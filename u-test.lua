@@ -84,6 +84,12 @@ api.not_equal = function (l, r)
     end
 end
 
+api.almost_equal = function (l, r, diff)
+    if require("math").abs(l - r) > diff then
+        fail("(" .. tostring(l) .. " - " .. tostring(r) ..") > " .. tostring(diff))
+    end
+end
+
 api.is_false = function (maybe_false)
     if maybe_false or type(maybe_false) ~= "boolean" then
         fail("got " .. tostring(maybe_false) .. " instead of false")
