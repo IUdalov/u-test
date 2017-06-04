@@ -31,6 +31,7 @@ local test = require 'u-test'
 test.addition = function ()
     test.equal(1 + 1, 2)
     test.not_equal("1 + 1", "2")
+    test.almost_equal(1 + 1, 2.1, 0.2)
 end
 
 -- You can enable custom start_up and tear_down actions 
