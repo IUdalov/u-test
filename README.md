@@ -40,7 +40,7 @@ end
 -- tear_down - after test case
 local global_state = 0
 test.start_up = function () global_state = 1 end
-test.tear_down = function () globla_state = 0 end
+test.tear_down = function () global_state = 0 end
 
 test.dummy1 = function()
     test.equal(global_state, 1)
@@ -58,6 +58,15 @@ test.string.find = function ()
     test.is_not_nil(string.find("u-test", "u"))
 end
 
+-- You can declare test case with parameters
+test.string.starts_with = function (str, prefix)
+    test.equal(string.find(str, prefix), 1)
+end
+
+-- Then, run it with multiple parameters
+test.string.starts_with("Lua rocks", "Lua")
+test.string.starts_with("Wow", "Wow")
+
 local global_table = {}
 
 -- Each test suite can be customized by start_up and tear_down
@@ -73,7 +82,7 @@ test.table.concat = function ()
 end
 
 -- you can disabe broken test case like this
-test.dummy_case.skip = true
+test.broken.skip = true
 test.broken.bad_case = function ()
     test.equal(1, 2)
     there_is_no_such_function()

@@ -70,6 +70,27 @@ local function fail(msg, start_frame)
     trace(start_frame or 4)
 end
 
+local function stringize_var_arg(varg, ...)
+    if varg then
+        local rest = stringize_var_arg(...)
+        if rest ~= "" then
+            return tostring(varg) .. ", ".. rest
+        else
+            return tostring(varg)
+        end
+    else
+        return ""
+    end
+end
+
+local function test_pretty_name(suite_name, test_name)
+    if suite_name == "__root" then
+        return test_name
+    else
+        return suite_name .. "." .. test_name
+    end
+end
+
 -- PUBLIC API -----------------------------------------------------------------
 local api = { test_suite_name = "__root", skip = false }
 api.equal = function (l, r)
@@ -86,7 +107,7 @@ end
 
 api.almost_equal = function (l, r, diff)
     if require("math").abs(l - r) > diff then
-        fail("(" .. tostring(l) .. " - " .. tostring(r) ..") > " .. tostring(diff))
+        fail("|" .. tostring(l) .. " - " .. tostring(r) .."| > " .. tostring(diff))
     end
 end
 
@@ -104,14 +125,14 @@ end
 
 api.is_not_nil = function (maybe_not_nil)
     if type(maybe_not_nil) == "nil" then
-        fail("got " .. tostring(maybe_not_nil) .. " instead of nil")
+        fail("got nil")
     end
 end
 
 local function make_type_checker(typename)
     api["is_" .. typename] = function (maybe_type)
         if type(maybe_type) ~= typename then
-            fail("got " .. tostring(maybe_type) .. " instead of " .. typename, 5)
+            fail("got " .. tostring(maybe_type) .. " instead of " .. typename, 4)
         end
     end
 end
@@ -122,12 +143,9 @@ for i, supported_type in ipairs(supported_types) do
 end
 
 local last_test_suite
-local function run_test(test_suite, test_name, test_function)
-    local test_suite_name = test_suite.test_suite_name
-    local full_test_name = test_name
-    if test_suite_name ~= "__root" then
-        full_test_name = test_suite_name .. "." .. full_test_name
-    end
+local function run_test(test_suite, test_name, test_function, ...)
+    local suite_name = test_suite.test_suite_name
+    local full_test_name = test_pretty_name(suite_name, test_name)
 
     if test_regex and not string.match(full_test_name, test_regex) then
         return
@@ -139,9 +157,9 @@ local function run_test(test_suite, test_name, test_function)
     end
 
 
-    if test_suite_name ~= last_test_suite then
+    if suite_name ~= last_test_suite then
         log(tab_tag)
-        last_test_suite = test_suite_name
+        last_test_suite = suite_name
     end
 
     ntests = ntests + 1
@@ -153,7 +171,7 @@ local function run_test(test_suite, test_name, test_function)
 
     local status, err
     for _, f in ipairs({test_suite.start_up,  test_function, test_suite.tear_down}) do
-        status, err = pcall(f)
+        status, err = pcall(f, ...)
         if not status then
             failed = true
             print(tostring(err))
@@ -176,10 +194,10 @@ end
 api.summary = function ()
     log(done_tag)
     if nfailed == 0 then
-        print(passed_tag .. " " .. ntests .. " test(s)")
+        log(passed_tag .. " " .. ntests .. " test(s)")
         os.exit(0)
     else
-        print(failed_tag .. " " .. nfailed .. " out of " .. ntests)
+        log(failed_tag .. " " .. nfailed .. " out of " .. ntests)
         os.exit(1)
     end
 end
@@ -194,25 +212,62 @@ local default_tear_down = function () collectgarbage() end
 api.start_up = default_start_up
 api.tear_down = default_tear_down
 
+local all_test_cases = { __root = {} }
+local function handle_new_test(suite, test_name, test_function)
+    local suite_name = suite.test_suite_name
+    if not all_test_cases[suite_name] then
+        all_test_cases[suite_name] = {}
+    end
+    all_test_cases[suite_name][test_name] = test_function
+
+    local info = debug.getinfo(test_function)
+    if info.nparams == 0 then
+        run_test(suite, test_name, test_function)
+    end
+end
+
+local function lookup_test_with_params(suite, test_name)
+    local suite_name = suite.test_suite_name
+
+    if all_test_cases[suite_name] and all_test_cases[suite_name][test_name] then
+        return function (...)
+            run_test(suite
+                , test_name .. "(" .. stringize_var_arg(...) .. ")"
+                , all_test_cases[suite_name][test_name], ...)
+        end
+    else
+        nfailed = nfailed + 1
+        ntests = ntests + 1
+        log(fail_tag .. " No " .. test_pretty_name(suite_name, test_name) .. " parametrized test case!")
+    end
+end
+
 local function new_test_suite(_, name)
     local test_suite = {
         test_suite_name = name,
         start_up = default_start_up,
         tear_down = default_tear_down,
         skip = false }
-    setmetatable(test_suite, { __newindex = run_test })
+
+    setmetatable(test_suite, {
+        __newindex = handle_new_test,
+        __index = lookup_test_with_params })
     return test_suite
 end
 
-local all_cases = {}
+local test_suites = {}
 setmetatable(api, {
     __index = function (tbl, name)
-        if not all_cases[name] then
-            all_cases[name] = new_test_suite(tbl, name)
+        if all_test_cases.__root[name] then
+            return lookup_test_with_params(tbl, name)
         end
-        return all_cases[name]
+
+        if not test_suites[name] then
+            test_suites[name] = new_test_suite(tbl, name)
+        end
+        return test_suites[name]
     end,
-    __newindex = run_test
+    __newindex = handle_new_test
 })
 
 return api
