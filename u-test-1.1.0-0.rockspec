@@ -1,5 +1,5 @@
 package = "u-test"
-version = "1.0.5-0"
+version = "1.1.0-0"
 source = {
     url = "git://github.com/iudalov/u-test"
 }
@@ -8,7 +8,7 @@ description = {
     summary = "Sane and simple unit testing framework for Lua",
     detailed =
     [[
-        **u-test** is a sane and simple unit testing framework for Lua. It has all essential features: defining test cases, test suites, set of build-in assertions, configurable tests output, lokkup tests by regexp, backtrace in assertions and etc.
+        **u-test** is a sane and simple unit testing framework for Lua. It has all essential features: defining test cases, test suites, set of build-in assertions, configurable tests output, lokkup tests by regexp, backtrace in assertions, tests with parameters, etc.
 
         u-test supports lua 5.1 5.2 and 5.3.
     ]],
