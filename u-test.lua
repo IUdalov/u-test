@@ -221,7 +221,9 @@ local function handle_new_test(suite, test_name, test_function)
     all_test_cases[suite_name][test_name] = test_function
 
     local info = debug.getinfo(test_function)
-    if info.nparams == 0 then
+    if info.nparams == nil and
+            string.sub(test_name, #test_name - 1, #test_name) ~= "_p"
+            or info.nparams == 0 then
         run_test(suite, test_name, test_function)
     end
 end

@@ -1,3 +1,8 @@
+do
+    local major, minor = _VERSION:match("Lua (%d).(%d)")
+    LUA_VERSION = major * 10 + minor
+end
+
 local t = require "u-test"
 
 t.all_assertions = function ()
@@ -38,31 +43,51 @@ t.all_assertions_failed = function ()
     fail_all()
 end
 
-t.param_root_test = function (a, b)
+t.param_root_test_p = function (a, b)
     t.equal(a,b)
 end
 
-t.param_root_test("Lua", "Lua")
+t.param_root_test_p("Lua", "Lua")
 
-t.case1.with_param = function (a, b, c)
+t.case1.with_param_p = function (a, b, c)
     t.equal(a + b,  c)
 end
 
-t.case1.with_param(1,2,3)
-t.case1.with_param(3,2,5)
+t.case1.with_param_p(1,2,3)
+t.case1.with_param_p(3,2,5)
 
-
-t.case1.with_nil = function (i_am_nil)
+t.case1.with_nil_p = function (i_am_nil)
     t.is_nil(i_am_nil)
 end
 
-t.case1.with_nil()
+t.case1.with_nil_p()
 
-t.case1.fail_with_param = function (placeholder)
+t.case1.fail_with_param_p = function (placeholder)
     fail_all()
 end
-t.case1.fail_with_param()
+
+t.case1.fail_with_param_p()
+
+if LUA_VERSION > 51 then
+
+    t.param_test = function (a, b)
+        t.equal(a,b)
+    end
+
+    t.param_test(2, 2)
+
+end -- Lua > 5.1
 
 local ntests, nfailed = t.result()
-print("All: " .. tostring(ntests) .. ", failed: " .. tostring(nfailed))
+
+t.tests_result = function()
+    if LUA_VERSION > 51 then
+        t.equal(ntests, 8)
+        t.equal(nfailed, 2)
+    else
+        t.equal(ntests, 7)
+        t.equal(nfailed, 2)
+    end
+end
+
 t.summary()
