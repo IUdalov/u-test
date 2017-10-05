@@ -58,14 +58,21 @@ test.string.find = function ()
     test.is_not_nil(string.find("u-test", "u"))
 end
 
--- You can declare test case with parameters
-test.string.starts_with = function (str, prefix)
+-- For Lua 5.1 you can declare test case with parameters by adding "_p" suffix
+test.string.starts_with_p = function (str, prefix)
     test.equal(string.find(str, prefix), 1)
 end
 
 -- Then, run it with multiple parameters
-test.string.starts_with("Lua rocks", "Lua")
-test.string.starts_with("Wow", "Wow")
+test.string.starts_with_p("Lua rocks", "Lua")
+test.string.starts_with_p("Wow", "Wow")
+
+-- For Lua > 5.1 you can create parameterised test
+-- just assigning function with parameters
+test.string.newer_parameterization = function(param, ...) end
+
+-- And call them just like a regular function
+test.string.newer_parameterization(1, 2, 3)
 
 local global_table = {}
 
