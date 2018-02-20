@@ -1,4 +1,4 @@
--- COMAND LINE ----------------------------------------------------------------
+-- COMMAND LINE ----------------------------------------------------------------
 local function print_help()
     print "Usage: target.lua [options] [regex]"
     print "\t-h show this message"
