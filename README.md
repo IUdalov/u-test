@@ -8,7 +8,7 @@ defining test cases, test suites, set of build-in assertions, configurable tests
 1. Nice command line interface (like gtest).
 1. Backtrace in failed assertions.
 1. Ordered test execution (as written in source file). 
-1. Support 5.1/5.2/5.3.
+1. Support 5.1/5.2/5.3 and LuaJIT.
 1. Select particular tests with regexp.
 
 ### How to install
@@ -26,6 +26,12 @@ $ luarocks install u-test
 ### How to use
 ```lua
 local test = require 'u-test'
+
+-- You can use 'assert' to check invariants.
+test.hello_world = function ()
+    test.assert(true)
+    test.assert(1 ~= 2)
+end
 
 -- This is how you can crete your first test case 
 test.addition = function ()
@@ -58,21 +64,14 @@ test.string.find = function ()
     test.is_not_nil(string.find("u-test", "u"))
 end
 
--- For Lua 5.1 you can declare test case with parameters by adding "_p" suffix
-test.string.starts_with_p = function (str, prefix)
+-- You can declare test case with parameters
+test.string.starts_with = function (str, prefix)
     test.equal(string.find(str, prefix), 1)
 end
 
 -- Then, run it with multiple parameters
-test.string.starts_with_p("Lua rocks", "Lua")
-test.string.starts_with_p("Wow", "Wow")
-
--- For Lua > 5.1 you can create parameterised test
--- just assigning function with parameters
-test.string.newer_parameterization = function(param, ...) end
-
--- And call them just like a regular function
-test.string.newer_parameterization(1, 2, 3)
+test.string.starts_with("Lua rocks", "Lua")
+test.string.starts_with("Wow", "Wow")
 
 local global_table = {}
 
@@ -106,6 +105,7 @@ test.summary()
 
 ### List of all assertions
 ```lua
+test.assert(true)
 test.equal(1, 1)
 test.not_equal(1, 2)
 test.is_false(false)

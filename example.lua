@@ -1,5 +1,11 @@
 local test = require 'u-test'
 
+-- You can use 'assert' to check invariants.
+test.hello_world = function ()
+    test.assert(true)
+    test.assert(1 ~= 2)
+end
+
 -- This is how you can crete your first test case 
 test.addition = function ()
     test.equal(1 + 1, 2)

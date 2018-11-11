@@ -93,6 +93,13 @@ end
 
 -- PUBLIC API -----------------------------------------------------------------
 local api = { test_suite_name = "__root", skip = false }
+
+api.assert = function (cond)
+    if not cond then
+        fail("assertion " .. tostring(cond) .. " failed")
+    end
+end
+
 api.equal = function (l, r)
     if l ~= r then
         fail(tostring(l) .. " ~= " .. tostring(r))
