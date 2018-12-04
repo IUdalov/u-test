@@ -6,14 +6,14 @@ test.hello_world = function ()
     test.assert(1 ~= 2)
 end
 
--- This is how you can crete your first test case 
+-- This is how you can create your first test case
 test.addition = function ()
     test.equal(1 + 1, 2)
     test.not_equal("1 + 1", "2")
     test.almost_equal(1 + 1, 2.1, 0.2)
 end
 
--- You can enable custom start_up and tear_down actions 
+-- You can enable custom start_up and tear_down actions
 -- Thse actions will be invoked:
 -- start_up - before test case
 -- tear_down - after test case
@@ -52,7 +52,7 @@ local global_table = {}
 test.table.start_up = function ()
     global_table = { 1, 2, "three", 4, "five" }
 end
-test.table.tear_down = function () 
+test.table.tear_down = function ()
     global_table = {}
 end
 
@@ -60,7 +60,7 @@ test.table.concat = function ()
     test.equal(table.concat(global_table, ", "), "1, 2, three, 4, five")
 end
 
--- you can disabe broken test case like this
+-- you can disable broken test case like this
 test.broken.skip = true
 test.broken.bad_case = function ()
     test.equal(1, 2)

@@ -136,6 +136,20 @@ api.is_not_nil = function (maybe_not_nil)
     end
 end
 
+api.error_raised = function (f, error_message, ...)
+    local status, err = pcall(f, ...)
+    if status == true then
+        fail("error not raised")
+    else
+        if error_message ~= nil then
+            -- we set "plain" to true to avoid pattern matching in string.find
+            if err:find(error_message, 1, true) == nil then
+                fail("'" .. error_message .. "' not found in error '" .. tostring(err) .. "'")
+            end
+        end
+    end
+end
+
 local function make_type_checker(typename)
     api["is_" .. typename] = function (maybe_type)
         if type(maybe_type) ~= typename then
