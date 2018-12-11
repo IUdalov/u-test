@@ -7,7 +7,7 @@ defining test cases, test suites, set of build-in assertions, configurable tests
 ### Top features that are not present in other lua test frameworks
 1. Nice command line interface (like gtest).
 1. Backtrace in failed assertions.
-1. Ordered test execution (as written in source file). 
+1. Ordered test execution (as written in source file).
 1. Support 5.1/5.2/5.3 and LuaJIT.
 1. Select particular tests with regexp.
 
@@ -33,14 +33,14 @@ test.hello_world = function ()
     test.assert(1 ~= 2)
 end
 
--- This is how you can crete your first test case 
+-- This is how you can create your first test case
 test.addition = function ()
     test.equal(1 + 1, 2)
     test.not_equal("1 + 1", "2")
     test.almost_equal(1 + 1, 2.1, 0.2)
 end
 
--- You can enable custom start_up and tear_down actions 
+-- You can enable custom start_up and tear_down actions
 -- Thse actions will be invoked:
 -- start_up - before test case
 -- tear_down - after test case
@@ -79,7 +79,7 @@ local global_table = {}
 test.table.start_up = function ()
     global_table = { 1, 2, "three", 4, "five" }
 end
-test.table.tear_down = function () 
+test.table.tear_down = function ()
     global_table = {}
 end
 
@@ -87,7 +87,7 @@ test.table.concat = function ()
     test.equal(table.concat(global_table, ", "), "1, 2, three, 4, five")
 end
 
--- you can disabe broken test case like this
+-- you can disable broken test case like this
 test.broken.skip = true
 test.broken.bad_case = function ()
     test.equal(1, 2)
@@ -119,4 +119,5 @@ test.is_number(3)
 test.is_table({"I am table now"})
 test.is_function(function () end)
 test.is_userdata(userdata_value)
+test.error_raised(function() error("error 10") end, "error 10")
 ```

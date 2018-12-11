@@ -20,6 +20,7 @@ t.all_assertions = function ()
     t.is_table({})
     t.is_function(function() end)
     t.is_thread(coroutine.create(function () end))
+    t.error_raised(function() error("") end)
 end
 
 local function fail_all()
@@ -37,6 +38,7 @@ local function fail_all()
     t.is_table()
     t.is_function(coroutine.create(function () end))
     t.is_thread(function() end)
+    t.error_raised(function() end)
 end
 
 t.all_assertions_failed = function ()
@@ -88,6 +90,24 @@ t.tests_result = function()
         t.equal(ntests, 7)
         t.equal(nfailed, 2)
     end
+end
+
+t.test_error_raised.when_error_is_raised = function()
+    t.error_raised(function() error("a custom error") end)
+end
+
+t.test_error_raised.with_error_message = function()
+    t.error_raised(function() error("a custom error") end,
+        "custom error")
+end
+
+t.test_error_raised.with_wrong_error_message = function()
+    t.error_raised(function() error("another error") end,
+        "custom error")
+end
+
+t.test_error_raised.when_error_is_not_raised = function()
+    t.error_raised(function() end)
 end
 
 t.summary()
