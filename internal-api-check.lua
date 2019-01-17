@@ -110,4 +110,29 @@ t.test_error_raised.when_error_is_not_raised = function()
     t.error_raised(function() end)
 end
 
+
+local function has_key(tab, key)
+    local msg
+    if type(tab) ~= "table" then
+        msg = "Expected first argument to be table"
+        return false, msg
+    end
+
+    if tab[key] == nil then
+        msg = "Expected table to have key '"..tostring(key).."'"
+        return false, msg
+    end
+
+    return true
+end
+
+t.register_assert("has_key", has_key)
+
+t.test_if_table_has_key = function(tab, key)
+    t.has_key(tab, key)
+end
+
+t.test_if_table_has_key({ name = "John" }, "name")
+t.test_if_table_has_key({ name = "John" }, "age")
+
 t.summary()
