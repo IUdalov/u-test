@@ -110,7 +110,6 @@ t.test_error_raised.when_error_is_not_raised = function()
     t.error_raised(function() end)
 end
 
-
 local function has_key(tab, key)
     local msg
     if type(tab) ~= "table" then

@@ -123,7 +123,6 @@ test.error_raised(function() error("error 10") end, "error 10")
 ```
 
 ### Custom assertions
-
 ```lua
 local function is_elephant(animal)
     if animal ~= "elephant" then

@@ -67,6 +67,24 @@ test.broken.bad_case = function ()
     there_is_no_such_function()
 end
 
+-- you can create custom assertions
+local function is_elephant(animal)
+    if animal ~= "elephant" then
+        local failure_msg = "Expected elephant, but got "..tostring(animal)
+        return false, msg
+    end
+
+    return true
+end
+
+-- register it
+test.register_assert("is_elephant", is_elephant)
+
+test.custom_assertion = function ()
+    -- you can use it like any other u-test function
+    test.is_elephant("elephant")
+end
+
 -- obtain total number of tests and numer of failed tests
 local ntests, nfailed = test.result()
 
