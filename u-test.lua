@@ -151,13 +151,13 @@ api.error_raised = function (f, error_message, ...)
 end
 
 api.register_assert = function(assert_name, assert_func)
-    api[assert_name] = function(...)
+    rawset(api, assert_name, function(...)
         local result, msg = assert_func(...)
         if not result then
             msg = msg or "Assertion "..assert_name.." failed"
             fail(msg)
         end
-    end
+    end)
 end
 
 local function make_type_checker(typename)
