@@ -121,3 +121,20 @@ test.is_function(function () end)
 test.is_userdata(userdata_value)
 test.error_raised(function() error("error 10") end, "error 10")
 ```
+
+### Custom assertions
+
+```lua
+local function is_elephant(animal)
+    if animal ~= "elephant" then
+        local failure_msg = "Expected elephant, but got "..tostring(animal)
+        return false, msg
+    end
+
+    return true
+end
+
+test.register_assert("is_elephant", is_elephant)
+
+test.is_elephant("dolphin") -- fails!
+```

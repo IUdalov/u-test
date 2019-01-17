@@ -150,6 +150,16 @@ api.error_raised = function (f, error_message, ...)
     end
 end
 
+api.register_assert = function(assert_name, assert_func)
+    rawset(api, assert_name, function(...)
+        local result, msg = assert_func(...)
+        if not result then
+            msg = msg or "Assertion "..assert_name.." failed"
+            fail(msg)
+        end
+    end)
+end
+
 local function make_type_checker(typename)
     api["is_" .. typename] = function (maybe_type)
         if type(maybe_type) ~= typename then
