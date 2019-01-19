@@ -74,7 +74,11 @@ local function stringize_var_arg(...)
     local args = { n = select("#", ...), ... }
     local result = {}
     for i = 1, args.n do
-        result[i] = tostring(args[i])
+        if type(args[i]) == 'string' then
+            result[i] = '"' .. tostring(args[i]) .. '"'
+        else
+            result[i] = tostring(args[i])
+        end
     end
     return table.concat(result, ", ")
 end
