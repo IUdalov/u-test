@@ -70,17 +70,17 @@ local function fail(msg, start_frame)
     trace(start_frame or 4)
 end
 
-local function stringize_var_arg(varg, ...)
-    if varg then
-        local rest = stringize_var_arg(...)
-        if rest ~= "" then
-            return tostring(varg) .. ", ".. rest
+local function stringize_var_arg(...)
+    local args = { n = select("#", ...), ... }
+    local result = {}
+    for i = 1, args.n do
+        if type(args[i]) == 'string' then
+            result[i] = '"' .. tostring(args[i]) .. '"'
         else
-            return tostring(varg)
+            result[i] = tostring(args[i])
         end
-    else
-        return ""
     end
+    return table.concat(result, ", ")
 end
 
 local function test_pretty_name(suite_name, test_name)
